@@ -8,9 +8,6 @@ def solution1(l):
             self.val = val
             self.children = []
 
-        def print_vals(self):
-            print([child.val for child in self.children])
-
     tree = {}
 
     for num in l:
@@ -22,10 +19,19 @@ def solution1(l):
 
         if num not in tree.keys():
             tree[num] = [temp_node]
+        else:
+            tree[num].append(temp_node)
 
-    
+    lucky_tuples = 0
+    for key in tree.keys():
+        for base_node in tree[key]:
+            for child in base_node.children:
+                lucky_tuples += len(child.children)
 
-    return 0
+
+    return lucky_tuples
+
+
 
 def generate_test_case(nums, low=1, high=999999):
     return [random.randint(low, high) for i in range(nums)]
