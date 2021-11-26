@@ -1,3 +1,5 @@
+import copy
+
 import Tools
 
 
@@ -58,20 +60,51 @@ def solution2(n):
         remainder_addends = [j for j in range(remainder, -1, -1)]
         print(i, remainder, remainder_addends)
 
+@Tools.profile
+def solution3(n):
+    def print_all_sum_rec(target, current_sum, start, output, result):
+        if current_sum == target:
+            output.append(copy.copy(result))
 
+        for i in range(start, target):
+            temp_sum = current_sum + i
+            if temp_sum <= target:
+                result.append(i)
+                #print("sum", temp_sum, "s", i+1,
+                #      "out", output, "res", result)
+                print_all_sum_rec(target, temp_sum, i+1, output, result)
+                result.pop()
+            else:
+                return
+
+    def print_all_sum(target):
+        output, result = [], []
+        print_all_sum_rec(target, 0, 1, output, result)
+        return output
+
+
+
+    final_result = print_all_sum(n)
+    #for addend_set in final_result:
+    #    print(addend_set)
+
+    return len(final_result)
 
 
 def test_solution():
-    test_cases = [[200, 487067745],
-                  [3, 1],
+    test_cases = [[3, 1],
                   [4, 1],
-                  [5, 2]
+                  [5, 2],
+                  [6, 3],
+                  [7, 4],
+                  [8, 5],
 
+                  [200, 487067745],
                   ]
-    solution2(3)
+    solution3(4)
     print()
-    solution2(4)
-    #Tools.run_tests(solution1, test_cases, True, 1)
+    #solution3(8)
+    Tools.run_tests(solution3, test_cases, True, 1)
     #Tools.run_tests(solution2, test_cases, False, 10000)
     #Tools.run_tests(solution3, test_cases, False, 10000)
     #Tools.run_tests(solution4, test_cases, False, 10000)
